@@ -13,12 +13,12 @@ class Lasery2z < Formula
   def install
     ENV["GOPATH"] = buildpath
 
-    bin_path = buildpath/"src/github.com/jadedjabberwocky/lasery2z"
+    bin_path = buildpath/"src/github.com/jadedjabberwocky/lasery2z/src"
     # Copy all files from their current location (GOPATH root)
     # to $GOPATH/src/github.com/jadedjabberwocky/lasery2z
     bin_path.install Dir["*"]
 
-    cd bin_path/"src" do
+    cd bin_path do
       system "go", "build", "-o", bin/"lasery2z", "."
     end
   end
