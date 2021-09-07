@@ -8,21 +8,23 @@ class Lasery2z < Formula
   sha256 "a619c852528a3e30bb32f8e321f757d8ba07c0f34967eb4124ec62ed2ad62e13"
   license "MIT"
 
-  depends_on "go"
+  depends_on "go" => :build
 
   def install
     ENV["GOPATH"] = buildpath
-    ENV["PATH"] = "#{ENV["PATH"]}:#{buildpath}/bin"
-    ENV["GO111MODULE"] = "on"
-    (buildpath/"src/github.com/jadedjabberwocky/lasery2z").install buildpath.children
-    cd "src/github.com/jadedjabberwocky/lasery2z" do
-      system "pwd"
-      system "find", "."
+
+    bin_path = buildpath/"src/github.com/jadedjabberwocky/lasery2z"
+    # Copy all files from their current location (GOPATH root)
+    # to $GOPATH/src/github.com/jadedjabberwocky/lasery2z
+    bin_path.install Dir["*"]
+
+    cd bin_path/"src" do
       system "go", "build", "-o", bin/"lasery2z", "."
     end
   end
 
   test do
-    assert_match /Usage: lasery2z/, shell_output("#{bin/lasery2z} --help", 0)
+    assert_match /Usage: lasery2z/, shell_output("#{bin}/lasery2z --help", 0)
   end
 end
+
