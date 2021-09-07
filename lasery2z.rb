@@ -13,8 +13,11 @@ class Lasery2z < Formula
   def install
     ENV["GOPATH"] = buildpath
     ENV["PATH"] = "#{ENV["PATH"]}:#{buildpath}/bin"
+    ENV["GO111MODULE"] = "on"
     (buildpath/"src/github.com/jadedjabberwocky/lasery2z").install buildpath.children
-    cd "src/github.com/jadedjabberwocky/lasery2z/src" do
+    cd "src/github.com/jadedjabberwocky/lasery2z" do
+      system "pwd"
+      system "find", "."
       system "go", "build", "-o", bin/"lasery2z", "."
     end
   end
